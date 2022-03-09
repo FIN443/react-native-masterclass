@@ -3,25 +3,23 @@ import React, { useState } from "react";
 import * as Font from "expo-font";
 import { Image, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Asset } from "expo-asset";
+import { Asset, useAssets } from "expo-asset";
+
+const loadFonts = (fonts) => fonts.map((font) => Font.loadAsync(font));
+const loadImages = (images) =>
+  images.map((image) => {
+    if (typeof image === "string") {
+      return Image.prefetch(image);
+    } else {
+      return Asset.loadAsync(image);
+    }
+  });
 
 export default function App() {
-  const [ready, setReady] = useState(false);
-  const onFinish = () => setReady(true);
-  const startLoading = async () => {
-    /* App loading screen */
-    await Font.loadAsync(Ionicons.font);
-    await Asset.loadAsync(require("./profile.png"));
-    await Image.prefetch("https://reactnative.dev/img/header_logo.svg");
-  };
-  if (!ready) {
-    return (
-      <AppLoading
-        startAsync={startLoading}
-        onFinish={onFinish}
-        onError={console.error}
-      />
-    );
+  const [assets] = useAssets([require("./profile.jpeg")]);
+  const [loaded] = Font.useFonts(Ionicons.font);
+  if (!assets || !loaded) {
+    return <AppLoading />;
   }
   return <Text>We are done loading!</Text>;
 }
