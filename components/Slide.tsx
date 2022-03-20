@@ -65,7 +65,7 @@ const Slide: React.FC<SlideProps> = ({
         <Column>
           <Title isDark={isDark}>{originalTitle}</Title>
           {voteAverage > 0 ? (
-            <Votes isDark={isDark}>⭐{voteAverage}/10</Votes>
+            <Votes isDark={isDark}>⭐ {voteAverage}/10</Votes>
           ) : null}
           <OverView isDark={isDark}>{overview.slice(0, 100)}...</OverView>
         </Column>
