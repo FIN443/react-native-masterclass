@@ -4,7 +4,7 @@ import Poster from "./Poster";
 import Votes from "./Votes";
 
 const HMovie = styled.View`
-  padding: 0px 30px;
+  padding: 0px 20px;
   flex-direction: row;
 `;
 
@@ -53,8 +53,8 @@ const HMedia: React.FC<HMediaProps> = ({
       <Poster path={posterPath} />
       <HColumn>
         <Title>
-          {originalTitle.length > 30
-            ? `${originalTitle.slice(0, 30)}...`
+          {originalTitle.length > 18
+            ? `${originalTitle.slice(0, 18)}...`
             : originalTitle}
         </Title>
         {releaseDate ? (
@@ -68,9 +68,11 @@ const HMedia: React.FC<HMediaProps> = ({
         ) : null}
         {voteAverage ? <Votes votes={voteAverage} /> : null}
         <Overview>
-          {overview !== "" && overview.length > 140
-            ? `${overview.slice(0, 140)}...`
-            : overview}
+          {overview !== ""
+            ? overview.length > 135
+              ? `${overview.slice(0, 135)}...`
+              : overview
+            : "요약 없음"}
         </Overview>
       </HColumn>
     </HMovie>

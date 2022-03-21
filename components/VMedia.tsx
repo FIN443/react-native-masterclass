@@ -28,8 +28,8 @@ const VMedia: React.FC<VMediaProps> = ({
   <Movie>
     <Poster path={posterPath} />
     <Title>
-      {originalTitle.slice(0, 11)}
-      {originalTitle.length > 13 ? "..." : null}
+      {originalTitle.slice(0, 8)}
+      {originalTitle.length > 9 ? "..." : null}
     </Title>
     <Votes votes={voteAverage} />
   </Movie>

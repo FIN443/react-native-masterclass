@@ -1,4 +1,4 @@
-import { BlurView } from "@react-native-community/blur";
+import { BlurView } from "expo-blur";
 import React from "react";
 import { StyleSheet, useColorScheme, View } from "react-native";
 import styled from "styled-components/native";
@@ -56,9 +56,12 @@ const Slide: React.FC<SlideProps> = ({
       />
       <BlurView
         style={StyleSheet.absoluteFill}
-        blurType={isDark ? "dark" : "light"}
-        blurAmount={10}
-        reducedTransparencyFallbackColor={isDark ? "black" : "white"}
+        intensity={50}
+        tint={isDark ? "dark" : "light"}
+        // react-native-community/blur
+        // blurType={isDark ? "dark" : "light"}
+        // blurAmount={10}
+        // reducedTransparencyFallbackColor={isDark ? "black" : "white"}
       />
       <Wrapper>
         <Poster path={posterPath} />
@@ -67,7 +70,13 @@ const Slide: React.FC<SlideProps> = ({
           {voteAverage > 0 ? (
             <Votes isDark={isDark}>⭐ {voteAverage}/10</Votes>
           ) : null}
-          <OverView isDark={isDark}>{overview.slice(0, 100)}...</OverView>
+          <OverView isDark={isDark}>
+            {overview !== ""
+              ? overview.length > 80
+                ? `${overview.slice(0, 80)}...`
+                : overview
+              : "요약 없음"}
+          </OverView>
         </Column>
       </Wrapper>
     </View>
