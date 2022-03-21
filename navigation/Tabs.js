@@ -6,7 +6,6 @@ import Search from "../screens/Search";
 import { useColorScheme } from "react-native";
 import colors from "../colors";
 import { Ionicons } from "@expo/vector-icons";
-import Stack from "./Stack";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +17,8 @@ const Tabs = () => {
         backgroundColor: isDark ? colors.black : "white",
       }}
       screenOptions={{
+        // kill another component and save your memory
+        unmountOnBlur: true,
         tabBarStyle: {
           backgroundColor: isDark ? colors.black : "white",
         },
