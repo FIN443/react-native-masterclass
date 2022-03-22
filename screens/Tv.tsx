@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dimensions, RefreshControl, ScrollView } from "react-native";
 import Swiper from "react-native-swiper";
 import { useQuery, useQueryClient } from "react-query";
@@ -11,33 +11,28 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Tv = () => {
   const queryClient = useQueryClient();
-  const {
-    isLoading: popularLoading,
-    data: popularData,
-    isRefetching: popularRefetching,
-  } = useQuery<TvResponse>(["tv", "popular"], tvApi.popular);
-  const {
-    isLoading: todayLoading,
-    data: todayData,
-    isRefetching: todayRefetching,
-  } = useQuery<TvResponse>(["tv", "today"], tvApi.airingToday);
-  const {
-    isLoading: topLoading,
-    data: topData,
-    isRefetching: topRefetching,
-  } = useQuery<TvResponse>(["tv", "top"], tvApi.topRated);
-  const {
-    isLoading: trendingLoading,
-    data: trendingData,
-    isRefetching: trendingRefetching,
-  } = useQuery<TvResponse>(["tv", "trending"], tvApi.trending);
-  const onRefresh = () => {
-    queryClient.refetchQueries(["tv"]);
+  const [refreshing, setRefreshing] = useState(false);
+  const { isLoading: popularLoading, data: popularData } = useQuery<TvResponse>(
+    ["tv", "popular"],
+    tvApi.popular
+  );
+  const { isLoading: todayLoading, data: todayData } = useQuery<TvResponse>(
+    ["tv", "today"],
+    tvApi.airingToday
+  );
+  const { isLoading: topLoading, data: topData } = useQuery<TvResponse>(
+    ["tv", "top"],
+    tvApi.topRated
+  );
+  const { isLoading: trendingLoading, data: trendingData } =
+    useQuery<TvResponse>(["tv", "trending"], tvApi.trending);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await queryClient.refetchQueries(["tv"]);
+    setRefreshing(false);
   };
   const loading =
     popularLoading || todayLoading || topLoading || trendingLoading;
-  const refreshing =
-    popularRefetching || todayRefetching || topRefetching || trendingRefetching;
   if (loading) {
     return <Loader />;
   }
