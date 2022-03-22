@@ -64,6 +64,10 @@ export const moviesApi = {
 };
 
 export const tvApi = {
+  popular: () =>
+    fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=ko&page=1`).then(
+      (res) => res.json()
+    ),
   trending: () =>
     fetch(
       `${BASE_URL}/trending/tv/week?api_key=${API_KEY}&language=ko&page=1`
