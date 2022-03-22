@@ -15,8 +15,8 @@ const Title = styled.Text`
 `;
 
 interface VMediaProps {
-  posterPath: string;
-  originalTitle: string;
+  posterPath: string | null;
+  originalTitle?: string;
   voteAverage: number;
 }
 
@@ -26,11 +26,15 @@ const VMedia: React.FC<VMediaProps> = ({
   voteAverage,
 }) => (
   <Movie>
-    <Poster path={posterPath} />
-    <Title>
-      {originalTitle.slice(0, 8)}
-      {originalTitle.length > 9 ? "..." : null}
-    </Title>
+    <Poster path={posterPath || ""} />
+    {originalTitle ? (
+      <Title>
+        {originalTitle.slice(0, 8)}
+        {originalTitle.length > 9 ? "..." : null}
+      </Title>
+    ) : (
+      <Title></Title>
+    )}
     <Votes votes={voteAverage} />
   </Movie>
 );
