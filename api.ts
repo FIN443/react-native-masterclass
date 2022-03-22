@@ -34,6 +34,10 @@ export interface TvProps {
   vote_count: number;
 }
 
+interface QueryProps {
+  queryKey: string[];
+}
+
 interface BaseResponse {
   page: number;
   total_results: number;
@@ -61,6 +65,12 @@ export const moviesApi = {
     fetch(
       `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko&page=1&region=kr`
     ).then((res) => res.json()),
+  search: ({ queryKey }: QueryProps) => {
+    const [_, query] = queryKey;
+    return fetch(
+      `${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko&page=1&region=kr&query=${query}`
+    ).then((res) => res.json());
+  },
 };
 
 export const tvApi = {
@@ -80,4 +90,10 @@ export const tvApi = {
     fetch(
       `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=ko&page=1`
     ).then((res) => res.json()),
+  search: ({ queryKey }: QueryProps) => {
+    const [_, query] = queryKey;
+    return fetch(
+      `${BASE_URL}/search/tv?api_key=${API_KEY}&language=ko&page=1&query=${query}`
+    ).then((res) => res.json());
+  },
 };
