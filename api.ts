@@ -1,7 +1,7 @@
 const API_KEY = "10923b261ba94d897ac6b81148314a3f";
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export interface MovieProps {
+export interface Movie {
   adult: boolean;
   backdrop_path: string | null;
   genre_ids: number[];
@@ -18,20 +18,21 @@ export interface MovieProps {
   vote_count: number;
 }
 
-export interface TvProps {
+export interface TV {
+  name: string;
+  original_name: string;
+  origin_country: string[];
+  vote_count: number;
   backdrop_path: string | null;
-  first_air_date: string;
+  vote_average: number;
   genre_ids: number[];
   id: number;
-  name: string;
-  origin_country: string[];
   original_language: string;
-  original_name: string;
   overview: string;
-  popularity: number;
   poster_path: string | null;
-  vote_average: number;
-  vote_count: number;
+  first_air_date: string;
+  popularity: number;
+  media_type: string;
 }
 
 interface QueryProps {
@@ -45,11 +46,11 @@ interface BaseResponse {
 }
 
 export interface MovieResponse extends BaseResponse {
-  results: MovieProps[];
+  results: Movie[];
 }
 
 export interface TvResponse extends BaseResponse {
-  results: TvProps[];
+  results: TV[];
 }
 
 export const moviesApi = {

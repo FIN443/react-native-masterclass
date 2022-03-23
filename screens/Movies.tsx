@@ -38,7 +38,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
     useQuery<MovieResponse>(["movies", "trending"], moviesApi.trending);
   const onRefresh = async () => {
     setRefreshing(true);
-    queryClient.refetchQueries(["movies"]);
+    await queryClient.refetchQueries(["movies"]);
     setRefreshing(false);
   };
   const loading = nowPlayingLoading || upcomingLoading || trendingLoading;
@@ -72,6 +72,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
                 originalTitle={movie.title}
                 voteAverage={movie.vote_average}
                 overview={movie.overview}
+                fullData={movie}
               />
             ))}
           </Swiper>
@@ -90,6 +91,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
           originalTitle={item.title}
           overview={item.overview}
           releaseDate={item.release_date}
+          fullData={item}
         />
       )}
     />

@@ -65,6 +65,7 @@ const Tv = () => {
             originalTitle={media.name}
             voteAverage={media.vote_average}
             overview={media.overview}
+            fullData={media}
           />
         ))}
       </Swiper>
