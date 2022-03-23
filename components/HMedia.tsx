@@ -1,4 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import Poster from "./Poster";
 import Votes from "./Votes";
@@ -48,34 +50,46 @@ const HMedia: React.FC<HMediaProps> = ({
   releaseDate,
   voteAverage,
 }) => {
+  const navigation = useNavigation();
+  const goToDetail = () => {
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        originalTitle,
+      },
+    });
+  };
   return (
-    <HMovie>
-      <Poster path={posterPath} />
-      <HColumn>
-        <Title>
-          {originalTitle.length > 18
-            ? `${originalTitle.slice(0, 18)}...`
-            : originalTitle}
-        </Title>
-        {releaseDate ? (
-          <Release>
-            {new Date(releaseDate).toLocaleDateString("ko", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Release>
-        ) : null}
-        {voteAverage ? <Votes votes={voteAverage} /> : null}
-        <Overview>
-          {overview !== ""
-            ? overview.length > 135
-              ? `${overview.slice(0, 135)}...`
-              : overview
-            : "요약 없음"}
-        </Overview>
-      </HColumn>
-    </HMovie>
+    <TouchableOpacity onPress={goToDetail}>
+      <HMovie>
+        <Poster path={posterPath} />
+        <HColumn>
+          <Title>
+            {originalTitle.length > 18
+              ? `${originalTitle.slice(0, 18)}...`
+              : originalTitle}
+          </Title>
+          {releaseDate ? (
+            <Release>
+              {new Date(releaseDate).toLocaleDateString("ko", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </Release>
+          ) : null}
+          {voteAverage ? <Votes votes={voteAverage} /> : null}
+          <Overview>
+            {overview !== ""
+              ? overview.length > 135
+                ? `${overview.slice(0, 135)}...`
+                : overview
+              : "요약 없음"}
+          </Overview>
+        </HColumn>
+      </HMovie>
+    </TouchableOpacity>
   );
 };
 

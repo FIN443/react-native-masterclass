@@ -1,6 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import { BlurView } from "expo-blur";
 import React from "react";
-import { StyleSheet, useColorScheme, View } from "react-native";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  useColorScheme,
+  View,
+} from "react-native";
 import styled from "styled-components/native";
 import { makeImgPath } from "../utils";
 import Poster from "./Poster";
@@ -48,38 +54,50 @@ const Slide: React.FC<SlideProps> = ({
   overview,
 }) => {
   const isDark = useColorScheme() === "dark";
+  const navigation = useNavigation();
+  const goToDetail = () => {
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        originalTitle,
+      },
+    });
+  };
   return (
-    <View style={{ flex: 1 }}>
-      <BgImg
-        style={StyleSheet.absoluteFill}
-        source={{ uri: makeImgPath(backdropPath) }}
-      />
-      <BlurView
-        style={StyleSheet.absoluteFill}
-        intensity={50}
-        tint={isDark ? "dark" : "light"}
-        // react-native-community/blur
-        // blurType={isDark ? "dark" : "light"}
-        // blurAmount={10}
-        // reducedTransparencyFallbackColor={isDark ? "black" : "white"}
-      />
-      <Wrapper>
-        <Poster path={posterPath} />
-        <Column>
-          <Title isDark={isDark}>{originalTitle}</Title>
-          {voteAverage > 0 ? (
-            <Votes isDark={isDark}>⭐ {voteAverage}/10</Votes>
-          ) : null}
-          <OverView isDark={isDark}>
-            {overview !== ""
-              ? overview.length > 80
-                ? `${overview.slice(0, 80)}...`
-                : overview
-              : "요약 없음"}
-          </OverView>
-        </Column>
-      </Wrapper>
-    </View>
+    <TouchableWithoutFeedback onPress={goToDetail}>
+      <View style={{ flex: 1 }}>
+        <BgImg
+          style={StyleSheet.absoluteFill}
+          source={{ uri: makeImgPath(backdropPath) }}
+        />
+        <BlurView
+          style={StyleSheet.absoluteFill}
+          intensity={50}
+          tint={isDark ? "dark" : "light"}
+          // react-native-community/blur
+          // blurType={isDark ? "dark" : "light"}
+          // blurAmount={10}
+          // reducedTransparencyFallbackColor={isDark ? "black" : "white"}
+        />
+        <Wrapper>
+          <Poster path={posterPath} />
+          <Column>
+            <Title isDark={isDark}>{originalTitle}</Title>
+            {voteAverage > 0 ? (
+              <Votes isDark={isDark}>⭐ {voteAverage}/10</Votes>
+            ) : null}
+            <OverView isDark={isDark}>
+              {overview !== ""
+                ? overview.length > 80
+                  ? `${overview.slice(0, 80)}...`
+                  : overview
+                : "요약 없음"}
+            </OverView>
+          </Column>
+        </Wrapper>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
