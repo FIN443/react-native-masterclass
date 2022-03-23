@@ -9,8 +9,7 @@ import HList from "../components/HList";
 import HMedia from "../components/HMedia";
 import Loader from "../components/Loader";
 import Slide from "../components/Slide";
-
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+import { SCREEN_HEIGHT } from "../utils";
 
 const ListTitle = styled.Text`
   color: white;

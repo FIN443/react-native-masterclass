@@ -6,8 +6,7 @@ import { tvApi, TvResponse } from "../api";
 import HList from "../components/HList";
 import Loader from "../components/Loader";
 import Slide from "../components/Slide";
-
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+import { SCREEN_HEIGHT } from "../utils";
 
 const Tv = () => {
   const queryClient = useQueryClient();
