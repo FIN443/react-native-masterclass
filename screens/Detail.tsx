@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { StyleSheet, TouchableOpacity, Share, Platform } from "react-native";
 import { useQuery } from "react-query";
 import styled from "styled-components/native";
-import { Movie, moviesApi, TV, tvApi } from "../api";
+import { Movie, MovieDetails, moviesApi, TV, tvApi, TVDetails } from "../api";
 import colors from "../colors";
 import Loader from "../components/Loader";
 import Poster from "../components/Poster";
@@ -69,25 +69,28 @@ const Detail: React.FC<DetailScreenProps> = ({
   route: { params: item },
 }) => {
   const isMovie = "title" in item;
-  const { isLoading, data } = useQuery(
+  const { isLoading, data } = useQuery<MovieDetails | TVDetails>(
     [isMovie ? "movies" : "tv", item.id],
     isMovie ? moviesApi.detail : tvApi.detail
   );
   const shareMedia = async () => {
-    const isAndroid = Platform.OS === "android";
-    const homepage = isMovie
-      ? `https://www.imdb.com/title/${data.imdb_id}`
-      : data.homepage;
-    if (isAndroid) {
-      await Share.share({
-        message: `${item.overview}\nCheck it out: ${homepage}`,
-        title: "title" in item ? item.title : item.name,
-      });
-    } else {
-      await Share.share({
-        url: homepage,
-        title: "title" in item ? item.title : item.name,
-      });
+    if (data) {
+      const isAndroid = Platform.OS === "android";
+      const homepage =
+        isMovie && "imdb_id" in data
+          ? `https://www.imdb.com/title/${data.imdb_id}`
+          : data.homepage;
+      if (isAndroid) {
+        await Share.share({
+          message: `${item.overview}\nCheck it out: ${homepage}`,
+          title: "title" in item ? item.title : item.name,
+        });
+      } else {
+        await Share.share({
+          url: homepage,
+          title: "title" in item ? item.title : item.name,
+        });
+      }
     }
   };
   const ShareButton = () => (
@@ -134,7 +137,7 @@ const Detail: React.FC<DetailScreenProps> = ({
         {isLoading ? <Loader /> : null}
         {data?.videos?.results?.map((video) => (
           <VideoBtn key={video.key} onPress={() => openYTLink(video.key)}>
-            <Ionicons name="logo-youtube" color="white" size={24} />
+            <Ionicons name="logo-youtube" color="#ea3323" size={24} />
             <BtnText>{video.name}</BtnText>
           </VideoBtn>
         ))}
