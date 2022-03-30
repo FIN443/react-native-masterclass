@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, TouchableOpacity } from "react-native";
+import { Animated, Easing, Pressable, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
 const Container = styled.View`
@@ -17,24 +17,38 @@ const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 export default function App() {
   const [up, setUp] = useState(false);
-  const Y = useRef(new Animated.Value(0)).current;
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 300 })).current;
   const toggleUp = () => setUp((prev) => !prev);
   const moveUp = () => {
-    Animated.timing(Y, {
-      toValue: up ? 200 : -200,
-      useNativeDriver: true,
+    Animated.timing(position, {
+      toValue: up ? 300 : -300,
+      duration: 2000,
+      useNativeDriver: false,
     }).start(toggleUp);
   };
-  Y.addListener(() => console.log(Y));
+  const rotation = position.y.interpolate({
+    inputRange: [-300, 300],
+    outputRange: ["-360deg", "360deg"],
+  });
+  const borderRadius = position.y.interpolate({
+    inputRange: [-300, 300],
+    outputRange: [100, 0],
+  });
+  const bgColor = position.y.interpolate({
+    inputRange: [-300, 300],
+    outputRange: ["rgb(225, 83, 99)", "rgb(112, 206, 221)"],
+  });
   return (
     <Container>
-      <TouchableOpacity onPress={moveUp}>
+      <Pressable onPress={moveUp}>
         <AnimatedBox
           style={{
-            transform: [{ translateY: Y }],
+            borderRadius,
+            backgroundColor: bgColor,
+            transform: [{ rotateY: rotation }, { translateY: position.y }],
           }}
         />
-      </TouchableOpacity>
+      </Pressable>
     </Container>
   );
 }
